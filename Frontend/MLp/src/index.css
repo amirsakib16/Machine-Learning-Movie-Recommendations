@@ -1,0 +1,235 @@
+/* Body styles */
+body {
+  background: linear-gradient(140deg, #17002e, #36001b); /* Attractive gradient background */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Center the content */
+.min-h-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Title styling */
+.movie-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+  margin-bottom: 20px;
+  animation: fadeIn 2s ease-in-out;
+}
+
+/* Input field styling */
+.movie-input {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  font-size: 1rem;
+  width: 300px;
+  outline: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  transition: border 0.3s ease;
+}
+
+/* Focus state for input field */
+.movie-input:focus {
+  border-color: #ff9e00;
+}
+
+/* Button styling */
+.movie-button {
+  padding: 12px 20px;
+  background-color: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 5px;
+  margin-left: 10px;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+/* Button hover effect */
+.movie-button:hover {
+  background-color: #ff0019;
+}
+
+/* Error message styling */
+.error-message {
+  color: #ff4747;
+  font-size: 1rem;
+  margin-top: 10px;
+  text-align: center;
+  animation: shake 0.5s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+/* Container for the scrollable movie list */
+.movie-list-container {
+  margin-top: 30px;
+  padding: 10px;
+  background-color: rgba(52, 2, 34, 0.7); /* Semi-transparent background */
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.scrollable-box {
+  height: 200px; /* Adjust this based on the size you want */
+  overflow-y: scroll; /* Add vertical scrollbar */
+  margin-top: 10px;
+  background-color: rgba(0, 0, 0, 0.5); /* Slightly darker background */
+  border-radius: 5px;
+}
+
+.movie-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 100%; /* Ensure the list doesn't overflow */
+}
+
+.movie-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.movie-item:hover {
+  background-color: #ff6f61; /* Change color on hover */
+}
+
+
+
+
+.suggestion-list {
+  list-style: none;
+  margin-top: 10px;
+  padding-left: 0;
+  position: absolute;
+  width: 50%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+
+
+
+
+
+
+/* Recommendations box styling */
+.recommendations-container {
+  margin-top: 30px;
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent box */
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
+  max-width: 500px;
+  width: 90%;
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  animation: fadeInBox 0.8s ease-in-out; /* Box fade-in animation */
+}
+
+/* Recommendations list styling */
+.recommendation-list {
+  margin-top: 20px;
+  padding: 0;
+  list-style-type: none;
+  display: flex; /* Add this to display items horizontally */
+  flex-wrap: wrap; /* Allows items to wrap to the next line if they exceed container width */
+  justify-content: center; /* Center the items */
+  gap: 20px; /* Add space between items */
+  text-align: center;
+}
+
+/* Recommendation item styling */
+.recommendation-item {
+  font-size: 1.3rem;
+  color: #ffffff;
+  margin: 12px 0;
+  padding: 20px;
+  background: linear-gradient(140deg, #2d004b, #4b0000); /* Gradient background */
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 0; /* Initially hidden */
+  transform: translateY(10px); /* Start slightly below */
+  animation: slideIn 0.5s ease forwards; /* Slide-in animation */
+  animation-delay: calc(var(--delay) * 0.2s); /* Staggered delay */
+}
+
+/* Hover effect for items */
+.recommendation-item:hover {
+  background: linear-gradient(90deg, #3b00fe, #ff1500);
+  color: #f9f9f9;
+  transform: scale(1.05); /* Slightly larger on hover */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  text-shadow: 0 0 5px #3b00fe, 0 0 10px #3b00fe, 0 0 20px #ff1500, 0 0 30px #ff1500, 0 0 40px #ff1500; /* Neon glow effect */
+}
+
+/* Animations */
+@keyframes fadeInBox {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 768px) {
+  .movie-title {
+    font-size: 2rem; /* Decrease font size on tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-title {
+    font-size: 1.5rem; /* Further decrease font size on mobile */
+  }
+}
