@@ -1,64 +1,46 @@
 from flask import Flask, request, jsonify, make_response
 import pandas as pd
 import json
+import pickle
+import os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.stem.porter import PorterStemmer
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # This will apply CORS to all routes
+CORS(app)  
 
 
+base_dir = os.path.dirname(os.path.abspath(__file__))  
+pickle_path = os.path.join(base_dir, "..", "information.pkl")  
+pickle_path = os.path.abspath(pickle_path)  
 
-
-movies = pd.read_csv(r"E:\project01\Backend\tmdb_5000_movies.csv")
-credit = pd.read_csv(r"E:\project01\Backend\tmdb_5000_credits.csv")
-df = movies.merge(credit, on="title")
-df = df[["movie_id", "title", "overview", "genres", "keywords", "cast", "crew"]]
-df.dropna(inplace=True)
-
-
-
-
-
-@app.route("/test", methods=["GET"])
-def test():
-    return jsonify({"message": "CORS test successful!"})
+# Load the preprocessed DataFrame from the pickle file
+try:
+    with open(pickle_path, "rb") as file:
+        df = pickle.load(file)
+except FileNotFoundError:
+    raise Exception(f"Could not find the file: {pickle_path}. Please verify its location.")
 
 porterstemmer = PorterStemmer()
 
-def DICTtoLST(data, cast=False, crew=False):
-    try:
-        parsed_data = json.loads(data)
-        if not cast and not crew:
-            return [item["name"].replace(" ", "").lower() for item in parsed_data]
-        elif cast and not crew:
-            return [item["name"].replace(" ", "").lower() for item in parsed_data][0:3]
-        elif not cast and crew:
-            return [item["name"].replace(" ", "").lower() for item in parsed_data if item["job"] == "Director"]
-    except (json.JSONDecodeError, TypeError, KeyError):
-        return []
+
 
 def TXTtoLST(data):
     return [porterstemmer.stem(i.lower()) for i in data.split()]
 
-def preprocess_df(df):
-    df["genres"] = df["genres"].apply(DICTtoLST)
-    df["keywords"] = df["keywords"].apply(DICTtoLST)
-    df["cast"] = df["cast"].apply(lambda x: DICTtoLST(x, cast=True, crew=False))
-    df["crew"] = df["crew"].apply(lambda x: DICTtoLST(x, cast=False, crew=True))
-    df["overview"] = df["overview"].apply(TXTtoLST)
-    df["TKN"] = df["overview"] + df["genres"] + df["keywords"] + df["cast"] + df["crew"]
-    df["TKN"] = df["TKN"].apply(lambda x: " ".join(x))
-    return df
 
-df = preprocess_df(df)
 
 
 count_vectorizer = CountVectorizer(max_features=5000, stop_words='english')
 vector = count_vectorizer.fit_transform(df["TKN"]).toarray()
 cosine_sim = cosine_similarity(vector)
+
+
+@app.route("/test", methods=["GET"])
+def test():
+    return jsonify({"message": "CORS test successful!"})
 
 @app.route("/recommend", methods=["POST"])
 def recommend():
